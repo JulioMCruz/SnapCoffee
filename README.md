@@ -161,7 +161,7 @@ npm run lint         # Run ESLint
 
 ## 🛣️ Development Roadmap
 
-### Phase 1: MVP Foundation (Weeks 1-2) ✅
+### Phase 1: MVP Foundation ✅
 - [x] React frontend with mobile-first UI
 - [x] Camera integration and photo workflow
 - [x] Progress tracking and localStorage persistence  
@@ -169,21 +169,21 @@ npm run lint         # Run ESLint
 - [ ] Base network smart contracts
 - [ ] OnchainKit wallet integration
 
-### Phase 2: Web3 Integration (Weeks 3-4) 🔄
+### Phase 2: Web3 Integration 🔄
 - [ ] ERC20 $BEAN token implementation
 - [ ] ERC721 NFT coupon system
 - [ ] CDP Server Wallet automation
 - [ ] On-chain event logging
 - [ ] Real-time feed from blockchain data
 
-### Phase 3: Monetization & Scale (Weeks 5-6) 📈
+### Phase 3: Monetization & Scale 📈
 - [ ] CDP Onramp fiat-to-crypto tipping
 - [ ] AI content moderation pipeline
 - [ ] Coffee shop analytics dashboard
 - [ ] B2B SaaS subscription system
 - [ ] Brand partnership integration
 
-### Phase 4: Growth & Optimization (Weeks 7-8) 🚀
+### Phase 4: Growth & Optimization 🚀
 - [ ] Mobile app (React Native/PWA)
 - [ ] Advanced gamification features
 - [ ] Multi-language support  
