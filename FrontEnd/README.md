@@ -1,10 +1,19 @@
-# Snap Coffee - Web3 Social Loyalty Platform
+# Snap Coffee - Farcaster Mini App
 
-Snap Coffee is a social + on-chain loyalty mini-app where users snap photos of their coffee at real coffee shops, earn tokens for participation, and after 10 coffees receive an NFT coupon they can redeem.
+Snap Coffee is a social + on-chain loyalty mini-app built for Farcaster where users snap photos of their coffee at real coffee shops, earn tokens for participation, and after 10 coffees receive an NFT coupon they can redeem.
+
+## Farcaster Mini App
+
+This app is designed to run as a Farcaster Mini App, providing:
+
+- **Seamless Authentication**: Users are automatically authenticated through Farcaster
+- **Built-in Wallet**: Farcaster creates and manages wallets for users automatically  
+- **Social Integration**: Direct integration with the Farcaster social graph
+- **Base Network**: Optimized for fast, cheap transactions on Base
 
 ## Project Structure
 
-This is a React + Vite + TypeScript application with shadcn/ui components and Tailwind CSS styling.
+This is a React + Vite + TypeScript application with shadcn/ui components, Tailwind CSS styling, and Farcaster Mini App SDK integration.
 
 ## Getting Started
 
@@ -40,12 +49,14 @@ npm run dev
 ## Technologies Used
 
 - **Frontend**: React 18, TypeScript, Vite
+- **Mini App**: Farcaster Mini App SDK, Base MiniKit
 - **Styling**: Tailwind CSS, shadcn/ui
 - **Routing**: React Router DOM
 - **State Management**: React hooks, localStorage
 - **UI Components**: Radix UI primitives
 - **Icons**: Lucide React
 - **Animations**: Canvas Confetti
+- **Web3**: Wagmi, Viem (for future blockchain integration)
 
 ## Current Features
 

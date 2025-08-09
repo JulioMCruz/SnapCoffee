@@ -1,0 +1,18 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjIxMDY3MSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDFCMTQ4OTFmNEU2QkQ4NTY1NmZiN0YyN0M0MGZkMWQ2NmRkNzZkMkIifQ",
+    "payload": "eyJkb21haW4iOiJjb2RhbGFicy5uZ3Jvay5pbyJ9",
+    "signature": "H1grIlz09NXlczLQg03+w9HmQp73uAX75oHIT3foY/wGLklk1Jn6xGg3QlvxjzJyejmhTHmjTB7U9e7DIyH7LRw="
+  },
+  "frame": {
+    "name": "Snap Coffee",
+    "version": "next",
+    "iconUrl": "https://snap-coffee.vercel.app/favicon.ico",
+    "homeUrl": "https://snap-coffee.vercel.app/",
+    "imageUrl": "https://snap-coffee.vercel.app/placeholder.svg",
+    "buttonTitle": "Open Snap Coffee",
+    "splashImageUrl": "https://snap-coffee.vercel.app/placeholder.svg",
+    "splashBackgroundColor": "#0052FF",
+    "webhookUrl": "https://snap-coffee.vercel.app/api/webhook"
+  }
+}

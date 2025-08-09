@@ -7,6 +7,14 @@ export default defineConfig(() => ({
   server: {
     host: "::",
     port: 8080,
+    hmr: {
+      host: 'localhost',
+    },
+    allowedHosts: [
+      'localhost',
+      'codalabs.ngrok.io',
+      'snapcoffee.xyz',
+    ],
   },
   plugins: [
     react(),

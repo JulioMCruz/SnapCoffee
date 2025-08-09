@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Home, Trophy, Camera, User } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import WalletConnect from "@/components/WalletConnect";
 
 interface MobileLayoutProps {
   title?: string;
@@ -23,9 +23,7 @@ export default function MobileLayout({ title = "Snap Coffee", children }: Mobile
             </div>
             <span className="font-semibold">{title}</span>
           </div>
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-primary/10 text-primary">U</AvatarFallback>
-          </Avatar>
+          <WalletConnect />
         </div>
       </header>
 
