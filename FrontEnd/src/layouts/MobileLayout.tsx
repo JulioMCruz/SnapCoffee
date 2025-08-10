@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Home, Trophy, Camera, User } from "lucide-react";
-import WalletConnect from "@/components/WalletConnect";
+import UserProfile from "@/components/UserProfile";
 
 interface MobileLayoutProps {
   title?: string;
@@ -18,12 +18,23 @@ export default function MobileLayout({ title = "Snap Coffee", children }: Mobile
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <img 
+              src="/logo.png" 
+              alt="Snap Coffee" 
+              className="h-7 w-7 rounded-lg object-contain"
+              onError={(e) => {
+                // Fallback if logo.png fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                target.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center hidden">
               <span className="text-primary text-sm font-bold">SC</span>
             </div>
             <span className="font-semibold">{title}</span>
           </div>
-          <WalletConnect />
+          <UserProfile />
         </div>
       </header>
 
