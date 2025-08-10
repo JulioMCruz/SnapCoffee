@@ -307,4 +307,35 @@ export class FarcasterService {
     
     return `${baseText}\n\n${hashtags}`;
   }
+
+  /**
+   * Generate Warpcast share URL (ZodiacCard approach)
+   * This creates a direct URL to open Warpcast compose window
+   */
+  generateWarpcastShareUrl(
+    coffeeName: string,
+    venueName: string, 
+    city: string,
+    state: string,
+    imageUrl?: string,
+    description?: string
+  ): string {
+    let text = `☕ Just snapped a ${coffeeName} at ${venueName} in ${city}, ${state}!`;
+    
+    if (description && description.trim()) {
+      text += `\n\n${description}`;
+    }
+    
+    text += `\n\nEarn $BEAN tokens for your coffee snaps! ☕🪙 #SnapCoffee`;
+    
+    // Create the Warpcast URL with embeds
+    let url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+    
+    if (imageUrl) {
+      // Add image embed and app link (like ZodiacCard does)
+      url += `&embeds[]=${encodeURIComponent(imageUrl)}&embeds[]=${encodeURIComponent('https://snap-coffee.vercel.app')}`;
+    }
+    
+    return url;
+  }
 }

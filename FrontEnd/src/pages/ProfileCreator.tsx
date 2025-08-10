@@ -280,7 +280,7 @@ export default function ProfileCreator() {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-2 mt-4">
-            {creator.badges.map((badge: string) => (
+            {creator.badges?.map((badge: string) => (
               <Badge key={badge} variant="outline" className="text-xs px-2 py-1">
                 {badge}
               </Badge>
@@ -315,7 +315,8 @@ export default function ProfileCreator() {
         {/* Tab Content */}
         {activeTab === "posts" && (
           <div className="p-4 space-y-4">
-            {creator.recentPosts.map((post: any) => (
+            {creator?.recentPosts?.length > 0 ? (
+              creator.recentPosts.map((post: any) => (
               <div key={post.id} className="bg-card border rounded-2xl p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
@@ -365,7 +366,13 @@ export default function ProfileCreator() {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+            ) : (
+              <div className="text-center py-8">
+                <Coffee className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground">No coffee snaps yet</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -375,12 +382,12 @@ export default function ProfileCreator() {
             <div>
               <h3 className="font-semibold mb-3">Favorite Cafés</h3>
               <div className="flex flex-wrap gap-2">
-                {creator.topCafes.map((cafe: string) => (
+                {creator?.topCafes?.map((cafe: string) => (
                   <Badge key={cafe} variant="outline" className="px-3 py-1">
                     <Coffee className="h-3 w-3 mr-1" />
                     {cafe}
                   </Badge>
-                ))}
+                )) || <p className="text-sm text-muted-foreground">No favorite cafés yet</p>}
               </div>
             </div>
 
@@ -388,7 +395,7 @@ export default function ProfileCreator() {
             <div>
               <h3 className="font-semibold mb-3">Achievements</h3>
               <div className="space-y-3">
-                {creator.achievements.map((achievement: any) => (
+                {creator?.achievements?.map((achievement: any) => (
                   <div key={achievement.name} className="flex items-center gap-3 p-3 bg-card border rounded-xl">
                     <span className="text-2xl">{achievement.icon}</span>
                     <div>
@@ -396,7 +403,9 @@ export default function ProfileCreator() {
                       <div className="text-xs text-muted-foreground">{achievement.description}</div>
                     </div>
                   </div>
-                ))}
+                )) || (
+                  <p className="text-sm text-muted-foreground">No achievements yet</p>
+                )}
               </div>
             </div>
           </div>

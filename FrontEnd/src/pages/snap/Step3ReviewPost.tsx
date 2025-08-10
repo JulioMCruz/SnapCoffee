@@ -20,11 +20,11 @@ export default function Step3ReviewPost() {
   const [pair, setPair] = useState<string>("");
   const [coffeeName, setCoffeeName] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
+  const [stateInput, setStateInput] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async () => {
-    if (!img || !selected || !coffeeName.trim() || !city.trim() || !state.trim()) {
+    if (!img || !selected || !coffeeName.trim() || !city.trim() || !stateInput.trim()) {
       toast({ 
         title: "Missing Information", 
         description: "Please fill in all required fields",
@@ -49,7 +49,7 @@ export default function Step3ReviewPost() {
       formData.append('coffeeName', coffeeName);
       formData.append('venueName', cafe);
       formData.append('city', city);
-      formData.append('state', state);
+      formData.append('state', stateInput);
       formData.append('rating', rating.toString());
       if (pair.trim()) {
         formData.append('description', `Paired with: ${pair}`);
@@ -65,10 +65,39 @@ export default function Step3ReviewPost() {
       const result = await uploadResponse.json();
       
       if (result.success) {
-        toast({ 
-          title: "Success! 🎉", 
-          description: `You earned ${result.data?.snap?.rewardAmount || '10'} $BEAN tokens!` 
-        });
+        // Check if we have a Warpcast share URL (ZodiacCard approach)
+        const { farcasterCast, warpcastShareUrl } = result.data || {};
+        
+        if (farcasterCast) {
+          // Automatic posting worked
+          toast({ 
+            title: "Posted to Farcaster! 🎉", 
+            description: `You earned ${result.data?.snap?.rewardAmount || '10'} $BEAN tokens!` 
+          });
+        } else if (warpcastShareUrl) {
+          // Show share option if automatic posting failed
+          toast({ 
+            title: "Upload Complete! ✅", 
+            description: `You earned ${result.data?.snap?.rewardAmount || '10'} $BEAN tokens! Share on Farcaster for bonus rewards.` 
+          });
+          
+          // Store share URL to show share button
+          navigate("/", { 
+            state: { 
+              posted: true, 
+              snap: result.data?.snap,
+              shareUrl: warpcastShareUrl 
+            } 
+          });
+          return;
+        } else {
+          // No Farcaster integration
+          toast({ 
+            title: "Success! 🎉", 
+            description: `You earned ${result.data?.snap?.rewardAmount || '10'} $BEAN tokens!` 
+          });
+        }
+        
         navigate("/", { state: { posted: true, snap: result.data?.snap } });
       } else {
         toast({ 
@@ -149,8 +178,8 @@ export default function Step3ReviewPost() {
           <div>
             <p className="text-sm mb-1">State <span className="text-red-500">*</span></p>
             <Input
-              value={state}
-              onChange={(e) => setState(e.target.value)}
+              value={stateInput}
+              onChange={(e) => setStateInput(e.target.value)}
               placeholder="e.g., CA"
               className="rounded-2xl"
             />
@@ -171,7 +200,7 @@ export default function Step3ReviewPost() {
           <Button
             className="w-full rounded-full h-12 text-base"
             onClick={handleSubmit}
-            disabled={isSubmitting || !selected || !coffeeName.trim() || !city.trim() || !state.trim()}
+            disabled={isSubmitting || !selected || !coffeeName.trim() || !city.trim() || !stateInput.trim()}
           >
             {isSubmitting ? (
               <>

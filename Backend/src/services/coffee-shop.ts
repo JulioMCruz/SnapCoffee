@@ -1,5 +1,5 @@
 import { config } from '@/config';
-import { Coinbase, Wallet } from '@coinbase/coinbase-sdk';
+// import { Coinbase, Wallet } from '@coinbase/coinbase-sdk';
 
 export interface CoffeeShop {
   id: string;
@@ -35,14 +35,14 @@ export interface CoffeeShopCreationRequest {
 }
 
 export class CoffeeShopService {
-  private coinbase: Coinbase;
+  // private coinbase: Coinbase;
   
   constructor() {
-    // Initialize Coinbase SDK
-    this.coinbase = Coinbase.configure({
-      apiKeyName: config.CDP_API_KEY,
-      privateKey: config.CDP_API_SECRET,
-    });
+    // TODO: Initialize Coinbase SDK when needed
+    // this.coinbase = Coinbase.configure({
+    //   apiKeyName: config.CDP_API_KEY,
+    //   privateKey: config.CDP_API_SECRET,
+    // });
   }
 
   /**
@@ -87,28 +87,22 @@ export class CoffeeShopService {
   }
 
   /**
-   * Create CDP server wallet for coffee shop
+   * Create CDP server wallet for coffee shop (placeholder for now)
    */
-  private async createShopWallet(shopId: string): Promise<Wallet> {
+  private async createShopWallet(shopId: string): Promise<any> {
     try {
       console.log(`Creating CDP wallet for shop: ${shopId}`);
       
-      const wallet = await Wallet.create({
-        networkId: config.NODE_ENV === 'production' ? Coinbase.networks.Base : Coinbase.networks.BaseSepolia,
-      });
+      // TODO: Implement actual CDP wallet creation
+      const mockWallet = {
+        getId: () => `wallet_${shopId}`,
+        getDefaultAddress: () => ({
+          getId: () => `0x${shopId.slice(-40).padStart(40, '0')}`
+        })
+      };
       
-      // Fund wallet with a small amount for initial transactions (testnet only)
-      if (config.NODE_ENV !== 'production') {
-        try {
-          const faucetTx = await wallet.faucet();
-          await faucetTx.wait();
-          console.log(`Funded shop wallet: ${wallet.getDefaultAddress()!.getId()}`);
-        } catch (faucetError) {
-          console.warn('Faucet funding failed (may not be available):', faucetError);
-        }
-      }
-      
-      return wallet;
+      console.log(`Mock wallet created for shop: ${shopId}`);
+      return mockWallet;
     } catch (error) {
       console.error('CDP wallet creation error:', error);
       throw new Error('Failed to create shop wallet');
