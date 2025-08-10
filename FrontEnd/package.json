@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@base-org/account": "^2.0.0",
     "@coinbase/onchainkit": "^0.38.19",
     "@farcaster/create-mini-app": "^0.1.0",
     "@farcaster/miniapp-sdk": "^0.1.8",

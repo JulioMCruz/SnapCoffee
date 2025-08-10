@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MiniAppProvider } from "@/providers/MiniAppProvider";
 import { Web3Provider } from "@/providers/Web3Provider";
+import AutoConnectWallet from "@/components/AutoConnectWallet";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -19,6 +20,7 @@ const Redeem = lazy(() => import("./pages/Redeem"));
 const App = () => (
   <MiniAppProvider>
     <Web3Provider>
+      <AutoConnectWallet />
       <TooltipProvider>
         <Toaster />
         <Sonner />
