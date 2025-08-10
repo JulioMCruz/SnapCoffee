@@ -5,12 +5,14 @@ import { ImageValidationService } from '@/services/image-validation';
 import { StorageService } from '@/services/storage';
 import { FarcasterService } from '@/services/farcaster';
 import { CoffeeShopService } from '@/services/coffee-shop';
+import { GooglePlacesService } from '@/services/places';
 
 export class CoffeeController {
   private imageValidationService = new ImageValidationService();
   private storageService = new StorageService();
   private farcasterService = new FarcasterService();
   private coffeeShopService = new CoffeeShopService();
+  private placesService = new GooglePlacesService();
   
   /**
    * Validate and process a coffee snap with file upload
@@ -97,8 +99,10 @@ export class CoffeeController {
         rewardAmount: config.REWARDS.COFFEE_SNAP_AMOUNT,
       };
       
-      // Create Farcaster post
+      // Create Farcaster post and share URL (dual approach like ZodiacCard)
       let farcasterCast = null;
+      let warpcastShareUrl = null;
+      
       try {
         const postText = this.farcasterService.generateCoffeePostText(
           coffeeName,
@@ -108,6 +112,17 @@ export class CoffeeController {
           description
         );
         
+        // Generate Warpcast share URL (ZodiacCard approach)
+        warpcastShareUrl = this.farcasterService.generateWarpcastShareUrl(
+          coffeeName,
+          venueName,
+          city,
+          state,
+          imageUrl,
+          description
+        );
+        
+        // Attempt automated posting via Neynar (if signer configured)
         const castResponse = await this.farcasterService.createCast({
           text: postText,
           imageUrl: imageUrl,
@@ -143,7 +158,7 @@ export class CoffeeController {
         }
       } catch (castError) {
         console.error('Farcaster cast creation failed:', castError);
-        // Continue without Farcaster post - still give base reward
+        // Continue with share URL - user can still post manually
       }
       
       // TODO: Save snap to database
@@ -156,6 +171,7 @@ export class CoffeeController {
           validation,
           coffeeShop,
           farcasterCast,
+          warpcastShareUrl, // Include share URL for manual posting
           rewardEligible: true,
         },
         message: 'Coffee snap validated and posted successfully!',
@@ -343,11 +359,11 @@ export class CoffeeController {
   }
   
   /**
-   * Get nearby coffee venues
+   * Get nearby coffee venues using Google Places API
    */
   async getNearbyVenues(req: Request, res: Response) {
     try {
-      const { lat, lng, radius = '1000' } = req.query;
+      const { lat, lng, radius = '1500', fallback } = req.query;
       
       if (!lat || !lng) {
         const response: ApiResponse = {
@@ -358,42 +374,95 @@ export class CoffeeController {
         return res.status(400).json(response);
       }
       
-      // TODO: Implement Google Places API integration
-      const mockVenues = [
-        {
-          id: 'venue_1',
-          name: 'Blue Bottle Coffee',
-          address: '123 Main St, San Francisco, CA',
-          distance: 150,
-          rating: 4.5,
-          snapCount: 25,
+      const latitude = parseFloat(lat as string);
+      const longitude = parseFloat(lng as string);
+      const searchRadius = parseInt(radius as string);
+      
+      console.log(`Searching for coffee shops near: ${latitude}, ${longitude} (radius: ${searchRadius}m)`);
+      
+      // Search for coffee shops using Google Places API
+      const coffeeShops = await this.placesService.searchCoffeeShops({
+        location: {
+          lat: latitude,
+          lng: longitude,
         },
-        {
-          id: 'venue_2', 
-          name: 'Philz Coffee',
-          address: '456 Market St, San Francisco, CA',
-          distance: 300,
-          rating: 4.3,
-          snapCount: 18,
-        },
-      ];
+        radius: searchRadius,
+      });
+      
+      // Transform to our venue format
+      const venues = coffeeShops.map(shop => ({
+        id: shop.placeId,
+        name: shop.name,
+        address: shop.address,
+        distance: shop.distance,
+        rating: shop.rating,
+        openNow: shop.openNow,
+        priceLevel: shop.priceLevel,
+        snapCount: 0, // TODO: Get from database
+      }));
+      
+      console.log(`Found ${venues.length} coffee shops`);
       
       const response: ApiResponse = {
         success: true,
-        data: { venues: mockVenues },
+        data: { 
+          venues,
+          location: { lat: latitude, lng: longitude },
+          radius: searchRadius,
+          usedFallback: fallback === 'true', // Indicate if fallback location was used
+        },
       };
       
       res.json(response);
     } catch (error: any) {
       console.error('Get nearby venues error:', error);
       
+      // If Places API fails, return mock venues
+      const mockVenues = [
+        {
+          id: 'mock_1',
+          name: 'Local Coffee Shop',
+          address: 'Near you',
+          distance: 100,
+          rating: 4.2,
+          openNow: true,
+          priceLevel: 2,
+          snapCount: 0,
+        },
+        {
+          id: 'mock_2',
+          name: 'Café Central',
+          address: 'Downtown',
+          distance: 250,
+          rating: 4.5,
+          openNow: true,
+          priceLevel: 3,
+          snapCount: 0,
+        },
+        {
+          id: 'mock_3',
+          name: 'The Roastery',
+          address: 'Main Street',
+          distance: 400,
+          rating: 4.3,
+          openNow: false,
+          priceLevel: 2,
+          snapCount: 0,
+        },
+      ];
+      
       const response: ApiResponse = {
-        success: false,
-        error: 'Venues Error',
-        message: error.message,
+        success: true,
+        data: {
+          venues: mockVenues,
+          location: { lat: parseFloat(lat as string), lng: parseFloat(lng as string) },
+          radius: parseInt(radius as string),
+          usedMockData: true,
+        },
+        message: 'Using sample venues - Google Places API unavailable',
       };
       
-      res.status(500).json(response);
+      res.json(response);
     }
   }
   
