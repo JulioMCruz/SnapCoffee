@@ -18,6 +18,7 @@ import rewardsRoutes from '@/routes/rewards';
 import couponsRoutes from '@/routes/coupons';
 import onrampRoutes from '@/routes/onramp';
 import usersRoutes from '@/routes/users';
+import agentsRoutes from '@/routes/agents';
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/rewards', rewardsRoutes);
 app.use('/api/coupons', couponsRoutes);
 app.use('/api/onramp', onrampRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/agents', agentsRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -64,6 +66,7 @@ app.get('/', (req, res) => {
       coupons: '/api/coupons',
       onramp: '/api/onramp',
       users: '/api/users',
+      agents: '/api/agents',
     },
   });
 });

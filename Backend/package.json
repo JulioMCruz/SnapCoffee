@@ -24,7 +24,12 @@
   "author": "Snap Coffee Team",
   "license": "MIT",
   "dependencies": {
+    "@coinbase/cdp-agentkit-core": "^0.0.7",
+    "@coinbase/cdp-agentkit-langchain": "^0.0.7",
     "@coinbase/coinbase-sdk": "^0.0.15",
+    "@coinbase/onchainkit": "^0.38.19",
+    "@langchain/core": "^0.3.21",
+    "@langchain/openai": "^0.3.14",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -33,11 +38,13 @@
     "firebase": "^12.1.0",
     "firebase-admin": "^13.4.0",
     "helmet": "^7.1.0",
+    "langchain": "^0.3.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "sharp": "^0.33.4",
     "uuid": "^10.0.0",
     "viem": "^2.33.3",
+    "wagmi": "^2.16.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

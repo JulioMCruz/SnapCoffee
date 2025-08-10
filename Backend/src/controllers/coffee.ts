@@ -6,6 +6,7 @@ import { StorageService } from '@/services/storage';
 import { FarcasterService } from '@/services/farcaster';
 import { CoffeeShopService } from '@/services/coffee-shop';
 import { GooglePlacesService } from '@/services/places';
+import { coffeeRewardAgent } from '@/agents/reward-agent';
 
 export class CoffeeController {
   private imageValidationService = new ImageValidationService();
