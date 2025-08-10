@@ -17,6 +17,7 @@ import coffeeRoutes from '@/routes/coffee';
 import rewardsRoutes from '@/routes/rewards';
 import couponsRoutes from '@/routes/coupons';
 import onrampRoutes from '@/routes/onramp';
+import usersRoutes from '@/routes/users';
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/coffee', coffeeRoutes);
 app.use('/api/rewards', rewardsRoutes);
 app.use('/api/coupons', couponsRoutes);
 app.use('/api/onramp', onrampRoutes);
+app.use('/api/users', usersRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -61,6 +63,7 @@ app.get('/', (req, res) => {
       rewards: '/api/rewards',
       coupons: '/api/coupons',
       onramp: '/api/onramp',
+      users: '/api/users',
     },
   });
 });

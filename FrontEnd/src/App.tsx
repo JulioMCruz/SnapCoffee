@@ -16,6 +16,8 @@ const Step3ReviewPost = lazy(() => import("./pages/snap/Step3ReviewPost"));
 const Coupon = lazy(() => import("./pages/Coupon"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Redeem = lazy(() => import("./pages/Redeem"));
+const Discover = lazy(() => import("./pages/Discover"));
+const ProfileCreator = lazy(() => import("./pages/ProfileCreator"));
 
 const App = () => (
   <MiniAppProvider>
@@ -34,6 +36,8 @@ const App = () => (
               <Route path="/snap/review" element={<Step3ReviewPost />} />
               <Route path="/coupon" element={<Coupon />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/profile/:fid" element={<ProfileCreator />} />
               <Route path="/redeem" element={<Redeem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
