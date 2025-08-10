@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ApiResponse, FarcasterWebhookPayload, FarcasterUser } from '@/types';
+import { logUserConnectionToFirebase } from '@/services/firebase';
 
 export class FarcasterController {
   
@@ -76,6 +77,86 @@ export class FarcasterController {
     }
   }
   
+  /**
+   * Log user connection events
+   */
+  async logUserConnection(req: Request, res: Response) {
+    try {
+      const { 
+        fid, 
+        walletAddress, 
+        username, 
+        displayName, 
+        connectionType = 'wallet_connect',
+        timestamp = new Date().toISOString() 
+      } = req.body;
+      
+      // Log connection to console
+      console.log('🔗 USER CONNECTION EVENT:', {
+        fid,
+        walletAddress,
+        username,
+        displayName,
+        connectionType,
+        timestamp,
+        userAgent: req.get('User-Agent'),
+        ip: req.ip || req.connection.remoteAddress,
+        headers: {
+          origin: req.get('Origin'),
+          referer: req.get('Referer')
+        }
+      });
+      
+      // Save to Firebase database
+      try {
+        const firebaseResult = await logUserConnectionToFirebase({
+          fid,
+          walletAddress,
+          username,
+          displayName,
+          connectionType,
+          timestamp,
+          userAgent: req.get('User-Agent'),
+          ip: req.ip || req.connection.remoteAddress,
+          origin: req.get('Origin'),
+          referer: req.get('Referer')
+        });
+        
+        if (firebaseResult) {
+          console.log('✅ User successfully saved to Firebase:', fid);
+        } else {
+          console.warn('⚠️ Failed to save user to Firebase:', fid);
+        }
+      } catch (firebaseError) {
+        console.error('❌ Firebase save error:', firebaseError);
+      }
+      
+      const response: ApiResponse = {
+        success: true,
+        data: {
+          logged: true,
+          fid,
+          walletAddress,
+          connectionType,
+          timestamp
+        },
+        message: 'User connection logged successfully',
+      };
+      
+      res.json(response);
+    } catch (error: any) {
+      console.error('❌ User connection logging error:', error);
+      
+      const response: ApiResponse = {
+        success: false,
+        error: 'Connection Logging Error',
+        message: error.message,
+      };
+      
+      res.status(500).json(response);
+    }
+  }
+
   /**
    * Validate Farcaster user authentication
    */

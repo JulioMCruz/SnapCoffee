@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useAccount, useConnect } from 'wagmi';
+import { logUserConnection } from '@/lib/api';
+import { useFarcaster } from '@/contexts/FarcasterContext';
 
 export default function AutoConnectWallet() {
   const { isConnected, address, status } = useAccount();
   const { connect, connectors, isPending, error } = useConnect();
+  const { user } = useFarcaster();
   const [hasAttempted, setHasAttempted] = useState(false);
+  const [hasLoggedConnection, setHasLoggedConnection] = useState(false);
 
   useEffect(() => {
     console.log('🔍 AutoConnectWallet status:', {
@@ -47,6 +51,26 @@ export default function AutoConnectWallet() {
       console.error('❌ Wallet connection error:', error);
     }
   }, [isConnected, address, error]);
+
+  // Log successful wallet connections to backend
+  useEffect(() => {
+    if (isConnected && address && user && !hasLoggedConnection) {
+      console.log('📡 Logging wallet connection to backend...');
+      
+      logUserConnection({
+        fid: user.fid,
+        walletAddress: address,
+        username: user.username,
+        displayName: user.displayName,
+        connectionType: 'wallet_connect'
+      }).then((success) => {
+        if (success) {
+          setHasLoggedConnection(true);
+          console.log('✅ Wallet connection logged to backend');
+        }
+      });
+    }
+  }, [isConnected, address, user, hasLoggedConnection]);
 
   // This component doesn't render anything
   return null;

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { sdk } from '@farcaster/miniapp-sdk';
+import { logUserConnection } from '@/lib/api';
 
 export interface FarcasterUser {
   fid: number;
@@ -47,6 +48,7 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
       setError(null);
       
       console.log('🔐 Attempting to get Farcaster context...');
+      console.log('🔍 API function imported:', typeof logUserConnection);
       
       // Get the context which contains user information
       const context = await sdk.context;
@@ -73,8 +75,24 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
       console.log('🔍 Context user data:', contextUser);
       console.log('🔍 Processed farcaster user:', farcasterUser);
 
-      console.log('✅ Farcaster user created:', farcasterUser);
+      console.log('✅ Farcaster user created - ok:', farcasterUser);
       setUser(farcasterUser);
+      
+      // Log successful connection to backend
+      console.log('🚀🚀🚀 ABOUT TO CALL BACKEND API - START');
+      try {
+        console.log('🚀 Attempting to log user connection to backend...');
+        const logResult = await logUserConnection({
+          fid: farcasterUser.fid,
+          username: farcasterUser.username,
+          displayName: farcasterUser.displayName,
+          walletAddress: farcasterUser.connectedAddress,
+          connectionType: 'farcaster_auth'
+        });
+        console.log('📊 Backend logging result:', logResult ? 'Success' : 'Failed');
+      } catch (logError) {
+        console.error('❌ Failed to log user connection to backend:', logError);
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
       setError(errorMessage);
@@ -82,14 +100,30 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
       
       // Always use fallback for now
       console.warn('🔄 Using fallback user data');
-      setUser({
+      const fallbackUser = {
         fid: 123456,
         username: 'coffeeluver',
         displayName: 'Coffee Lover',
         pfpUrl: '/placeholder.svg',
         custodyAddress: '0x1234567890abcdef1234567890abcdef12345678',
         connectedAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      });
+      };
+      
+      setUser(fallbackUser);
+      
+      // Log demo user connection to backend
+      try {
+        await logUserConnection({
+          fid: fallbackUser.fid,
+          walletAddress: fallbackUser.connectedAddress,
+          username: fallbackUser.username,
+          displayName: fallbackUser.displayName,
+          connectionType: 'demo'
+        });
+        console.log('📊 Demo user logged to backend');
+      } catch (logError) {
+        console.error('❌ Failed to log demo user to backend:', logError);
+      }
     } finally {
       setLoading(false);
     }
