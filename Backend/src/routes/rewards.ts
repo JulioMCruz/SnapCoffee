@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { RewardsController } from '@/controllers/rewards';
+import { authenticateApiKey, optionalAuth } from '@/middleware/auth';
 
 const router = Router();
 const rewardsController = new RewardsController();
@@ -9,7 +10,7 @@ const rewardsController = new RewardsController();
  * Mint $BEAN tokens as rewards
  * Body: { userId, amount, reason, metadata? }
  */
-router.post('/mint', rewardsController.mintRewards);
+router.post('/mint', authenticateApiKey, rewardsController.mintRewards);
 
 /**
  * GET /api/rewards/user/:userId/balance
@@ -29,17 +30,17 @@ router.get('/user/:userId/history', rewardsController.getRewardHistory);
  * Claim pending rewards
  * Body: { userId, rewardIds[] }
  */
-router.post('/claim', rewardsController.claimRewards);
+router.post('/claim', authenticateApiKey, rewardsController.claimRewards);
 
 /**
  * GET /api/rewards/milestones/:userId
  * Get user's milestone progress
  */
-router.get('/milestones/:userId', rewardsController.getMilestones);
+router.get('/milestones/:userId', optionalAuth, rewardsController.getMilestones);
 
 /**
  * GET /api/rewards/stats
- * Get global reward statistics
+ * Get global reward statistics (public)
  */
 router.get('/stats', rewardsController.getRewardStats);
 

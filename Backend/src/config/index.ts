@@ -70,14 +70,21 @@ export const config = {
   // Google Places API (for venue data)
   GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY,
   
+  // Firebase Admin Configuration
+  FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+  FIREBASE_PRIVATE_KEY_ID: process.env.FIREBASE_PRIVATE_KEY_ID,
+  FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
+  FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
+  FIREBASE_CLIENT_ID: process.env.FIREBASE_CLIENT_ID,
+  
   // Rate Limiting
   RATE_LIMIT: {
     WINDOW_MS: 15 * 60 * 1000, // 15 minutes
     MAX_REQUESTS: 100, // requests per window
   },
   
-  // JWT Configuration (for future auth)
-  JWT_SECRET: process.env.JWT_SECRET || 'snap-coffee-dev-secret',
+  // API Authentication
+  JWT_SECRET: process.env.API_SECRET || process.env.JWT_SECRET || 'snap-coffee-dev-secret',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
   
   // Webhook Configuration

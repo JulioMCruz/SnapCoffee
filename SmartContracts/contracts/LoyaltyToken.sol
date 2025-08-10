@@ -239,7 +239,12 @@ contract LoyaltyToken is
     
     /**
      * @dev Get contract information
-     * @return info Contract information struct
+     * @return name_ Token name
+     * @return symbol_ Token symbol  
+     * @return decimals_ Token decimals
+     * @return totalSupply_ Current total supply
+     * @return maxSupply_ Maximum supply
+     * @return isPaused_ Contract pause status
      */
     function getContractInfo() external view returns (
         string memory name_,

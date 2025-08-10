@@ -13,14 +13,26 @@ This repository contains the smart contracts that power Snap Coffee, a Web3 soci
 | Contract | Purpose | Type | Key Features |
 |----------|---------|------|--------------|
 | `LoyaltyToken` | $BEAN reward token | ERC20 | Mintable, burnable, permit, daily limits |
+| `RewardsController` | Coffee verification & rewards | Controller | Anti-fraud, reward distribution, merchant management |
 | `CouponNFT` | Coffee coupon NFTs | ERC721 | Redeemable, expirable, venue-specific |
 | `SnapRegistry` | Event logging & analytics | Registry | Anti-fraud, user stats, venue analytics |
+
+### Deployed Contracts (Base Sepolia)
+
+| Contract | Address | Explorer Link | Status |
+|----------|---------|---------------|--------|
+| **LoyaltyToken ($BEAN)** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View on BaseScan](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752) | ✅ Deployed |
+| **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View on BaseScan](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834) | ✅ Deployed |
+
+> **Note**: Contracts need to be verified on BaseScan. Add your `BASESCAN_API_KEY` to `.env` and run `npm run verify:base-sepolia`
 
 ### Contract Interactions
 
 ```
-User snaps coffee → Backend validates → Mint $BEAN tokens
-                                    ↓
+User snaps coffee → Backend validates → RewardsController.verifyCoffeeAndReward()
+                                                    ↓
+                                    Automatically mints 3 $BEAN tokens
+                                                    ↓
 User earns 10 coffees → Backend triggers → Mint NFT coupon
                                         ↓  
 User redeems at venue → QR scan → Mark coupon as redeemed
@@ -102,6 +114,28 @@ function batchMint(address[] recipients, uint256[] amounts, string reason) exter
 function getRemainingDailyMint(address minter) external view returns (uint256);
 ```
 
+### RewardsController
+
+**Features:**
+- Coffee purchase verification and automatic reward distribution
+- Anti-fraud mechanisms (daily limits, location cooldowns)
+- Merchant registration and management
+- User and merchant statistics tracking
+- Integration with BEAN token for reward minting
+
+**Key Functions:**
+```solidity
+function verifyCoffeeAndReward(address user, string locationId, bytes32 imageHash, uint256 timestamp) external;
+function registerMerchant(address merchant, string locationId, string name) external;
+function getUserStats(address user) external view returns (uint256, uint256, uint256, bool);
+function canUserClaimAt(address user, string locationId) external view returns (bool, uint256);
+```
+
+**Configuration:**
+- Coffee Reward: 3 BEAN tokens per verified coffee
+- Daily Limit: 10 coffees per user per day
+- Cooldown Period: 30 minutes between claims at same location
+
 ### CouponNFT
 
 **Features:**
@@ -170,17 +204,48 @@ npm run verify:base
 ### Backend Integration
 
 ```typescript
-// Example: Minting $BEAN tokens after coffee snap validation
-import { LoyaltyToken } from './typechain-types';
+// Example: Coffee verification and reward distribution
+import { RewardsController } from './typechain-types';
 
-async function rewardUser(userAddress: string, amount: string, reason: string) {
-  const loyaltyToken = new ethers.Contract(
-    LOYALTY_TOKEN_ADDRESS,
-    LoyaltyTokenABI,
+async function rewardUserForCoffee(
+  userAddress: string, 
+  locationId: string, 
+  imageHash: string, 
+  timestamp: number
+) {
+  const rewardsController = new ethers.Contract(
+    REWARDS_CONTROLLER_ADDRESS,
+    RewardsControllerABI,
     cdpWallet
-  ) as LoyaltyToken;
+  ) as RewardsController;
   
-  const tx = await loyaltyToken.mint(userAddress, ethers.parseEther(amount), reason);
+  // This automatically mints 3 BEAN tokens to user if validation passes
+  const tx = await rewardsController.verifyCoffeeAndReward(
+    userAddress,
+    locationId,
+    imageHash,
+    timestamp
+  );
+  await tx.wait();
+}
+
+// Example: Register a new merchant location
+async function registerMerchantLocation(
+  merchantAddress: string,
+  locationId: string,
+  name: string
+) {
+  const rewardsController = new ethers.Contract(
+    REWARDS_CONTROLLER_ADDRESS,
+    RewardsControllerABI,
+    cdpWallet
+  ) as RewardsController;
+  
+  const tx = await rewardsController.registerMerchant(
+    merchantAddress,
+    locationId,
+    name
+  );
   await tx.wait();
 }
 ```

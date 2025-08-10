@@ -113,7 +113,7 @@ contract CouponNFT is
         uint256 discountPercent,
         uint256 expiryDays,
         string calldata venueId
-    ) external onlyRole(MINTER_ROLE) whenNotPaused nonReentrant returns (uint256 tokenId) {
+    ) public onlyRole(MINTER_ROLE) whenNotPaused nonReentrant returns (uint256 tokenId) {
         require(to != address(0), "Cannot mint to zero address");
         require(discountPercent > 0 && discountPercent <= 100, "Invalid discount percentage");
         require(expiryDays > 0 && expiryDays <= 365, "Invalid expiry days");
@@ -355,18 +355,12 @@ contract CouponNFT is
     }
     
     /**
-     * @dev Override _update to add pause functionality
+     * @dev Override _update to add pause functionality  
      */
     function _update(address to, uint256 tokenId, address auth) internal override whenNotPaused returns (address) {
         return super._update(to, tokenId, auth);
     }
     
-    /**
-     * @dev Override burn function from ERC721URIStorage
-     */
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
-    }
     
     /**
      * @dev Override supportsInterface

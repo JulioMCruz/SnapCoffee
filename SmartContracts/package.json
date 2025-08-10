@@ -12,6 +12,9 @@
     "deploy:localhost": "hardhat run scripts/deploy.ts --network localhost",
     "deploy:base-sepolia": "hardhat run scripts/deploy.ts --network base-sepolia",
     "deploy:base": "hardhat run scripts/deploy.ts --network base",
+    "deploy:cdp": "npx ts-node scripts/deploy-cdp.ts",
+    "deploy:bean": "hardhat run scripts/deploy-bean-simple.ts --network base-sepolia",
+    "deploy:rewards": "hardhat run scripts/deploy-rewards-controller.ts --network base-sepolia",
     "verify:base-sepolia": "hardhat run scripts/verify.ts --network base-sepolia",
     "verify:base": "hardhat run scripts/verify.ts --network base",
     "flatten": "hardhat flatten",
@@ -35,6 +38,7 @@
   "author": "Snap Coffee Team",
   "license": "MIT",
   "dependencies": {
+    "@coinbase/coinbase-sdk": "^0.25.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2"
   },

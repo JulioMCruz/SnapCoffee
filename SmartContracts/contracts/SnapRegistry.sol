@@ -315,7 +315,11 @@ contract SnapRegistry is AccessControl, Pausable, ReentrancyGuard {
     /**
      * @dev Get user's milestone progress
      * @param user User address
-     * @return progress Milestone progress data
+     * @return validatedSnaps Number of validated snaps
+     * @return totalRewards Total rewards earned
+     * @return couponsEarned Number of coupons earned
+     * @return consecutiveDays Consecutive days
+     * @return nextCouponEligible Whether eligible for next coupon
      */
     function getUserMilestoneProgress(address user) external view returns (
         uint256 validatedSnaps,
@@ -338,7 +342,11 @@ contract SnapRegistry is AccessControl, Pausable, ReentrancyGuard {
     /**
      * @dev Get venue analytics
      * @param venueId Venue ID
-     * @return analytics Venue analytics data
+     * @return name Venue name
+     * @return totalSnaps Total snaps at venue
+     * @return uniqueVisitors Unique visitors count
+     * @return totalRewards Total rewards distributed
+     * @return isVerified Whether venue is verified
      */
     function getVenueAnalytics(string calldata venueId) external view returns (
         string memory name,

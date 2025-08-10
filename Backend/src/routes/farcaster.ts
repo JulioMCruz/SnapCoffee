@@ -26,4 +26,10 @@ router.get('/user/:fid', farcasterController.getUserProfile);
  */
 router.post('/validate-user', farcasterController.validateUser);
 
+/**
+ * POST /api/farcaster/log-connection
+ * Log user connection events for analytics
+ */
+router.post('/log-connection', farcasterController.logUserConnection);
+
 export default router;
