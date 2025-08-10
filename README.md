@@ -340,9 +340,11 @@ SnapRegistry.sol      // Event logging and verification
 |----------|---------|-------------------|--------|
 | **$BEAN Token** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View Contract →](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752#code) | ✅ Verified |
 | **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View Contract →](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834#code) | ✅ Verified |
+| **🎫 CouponNFT** | `0xD887274dF28Ac21efafFeB8bc421B5305884fCAa` | [View Contract →](https://sepolia.basescan.org/address/0xD887274dF28Ac21efafFeB8bc421B5305884fCAa#code) | ✅ Verified |
 
 **Key Features:**
 - 🪙 **$BEAN Token**: ERC20 rewards with 3 BEAN per verified coffee
+- 🎫 **CouponNFT**: ERC721 redeemable coffee coupons after 10 visits (10M max supply)
 - 🛡️ **Anti-fraud**: Daily limits (10 coffees/user), 30min cooldowns per location
 - 👥 **Merchant System**: Registration and analytics for coffee shops
 - 🔍 **Full Transparency**: Complete source code verified on BaseScan
@@ -400,8 +402,9 @@ cp .env.example .env
 
 Key variables to configure:
 ```bash
-# Coinbase Ecosystem
-VITE_BEAN_TOKEN_ADDRESS=your_deployed_bean_token_address
+# Coinbase Ecosystem (Base Sepolia - Verified Contracts)
+VITE_BEAN_TOKEN_ADDRESS=0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752
+VITE_NFT_COUPON_ADDRESS=0xD887274dF28Ac21efafFeB8bc421B5305884fCAa
 VITE_USDC_TOKEN_ADDRESS=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 VITE_ONRAMP_APP_ID=your_coinbase_onramp_app_id
 VITE_MINIKIT_ENABLED=true
@@ -429,8 +432,9 @@ OPENAI_API_KEY=your_openai_api_key
 CDP_WALLET_ID=your_server_wallet_id
 CDP_NETWORK=base-sepolia
 
-# Smart Contracts
-LOYALTY_TOKEN_ADDRESS=your_deployed_bean_token
+# Smart Contracts (Base Sepolia - Verified)
+LOYALTY_TOKEN_ADDRESS=0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752
+COUPON_NFT_ADDRESS=0xD887274dF28Ac21efafFeB8bc421B5305884fCAa
 ```
 
 ### Start Development
@@ -597,6 +601,37 @@ const EnhancedOnrampWidget = ({ context }: { context: OnrampContext }) => {
 - 🔄 **Onboarding Flow**: Guided experience explains USDC, Base, and wallet concepts
 - ✅ **Success Integration**: Seamlessly returns to intended action after purchase
 
+### 🎫 CouponNFT Smart Contract System
+**File**: [`SmartContracts/contracts/CouponNFT.sol`](./SmartContracts/contracts/CouponNFT.sol)  
+**Deployed**: [`0xD887274dF28Ac21efafFeB8bc421B5305884fCAa`](https://sepolia.basescan.org/address/0xD887274dF28Ac21efafFeB8bc421B5305884fCAa#code)
+
+Complete ERC721 NFT coupon system with coffee shop loyalty features:
+
+```solidity
+contract CouponNFT is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl {
+  struct CouponMetadata {
+    uint256 coffeeShopsEarned;  // Number of visits to earn this
+    uint256 discountPercent;    // Discount percentage (e.g., 20%)
+    uint256 expiryTimestamp;    // Expiration timestamp
+    string venueId;            // Associated venue ID
+    bool isRedeemed;           // Redemption status
+  }
+  
+  function mintCoupon(address to, uint256 coffeeShopsEarned, 
+                     uint256 discountPercent, uint256 expiryDays, 
+                     string calldata venueId) external;
+}
+```
+
+**Advanced Features**:
+- 🏪 **Per-Store Coupons**: Venue-specific or general redeemable coupons
+- ⏰ **Expiration System**: Configurable expiry (1-365 days)
+- 🔄 **Batch Minting**: Mint up to 100 coupons in single transaction
+- 🛡️ **Fraud Protection**: Role-based access control and anti-replay
+- 📊 **Analytics**: Track user coupons, venue coupons, redemption rates
+- 💰 **Flexible Discounts**: 1-100% configurable discount percentages
+- 🎯 **Milestone Rewards**: Automatic minting after 10 coffee visits
+
 ---
 
 ## ⚡ Why Base Network Powers Our Vision
@@ -643,7 +678,7 @@ Base is the only L2 that combines technical excellence with a comprehensive ecos
 - [x] Agent API endpoints for autonomous operations ([`agent.ts`](./Backend/src/controllers/agent.ts))
 
 ### Phase 3: Advanced Features & Scale 🔄
-- [ ] ERC721 NFT coupon system completion
+- [x] **ERC721 NFT coupon system**: Complete with automated minting and redemption ([Contract →](https://sepolia.basescan.org/address/0xD887274dF28Ac21efafFeB8bc421B5305884fCAa#code))
 - [ ] Coffee shop analytics dashboard with CDP wallet data
 - [ ] Advanced AI moderation pipeline with Agent Kit
 - [ ] B2B SaaS subscription system

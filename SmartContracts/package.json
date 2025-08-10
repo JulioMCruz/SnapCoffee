@@ -15,6 +15,7 @@
     "deploy:cdp": "npx ts-node scripts/deploy-cdp.ts",
     "deploy:bean": "hardhat run scripts/deploy-bean-simple.ts --network base-sepolia",
     "deploy:rewards": "hardhat run scripts/deploy-rewards-controller.ts --network base-sepolia",
+    "deploy:coupon-nft": "hardhat run scripts/deploy-coupon-nft.ts --network base-sepolia",
     "verify:base-sepolia": "hardhat run scripts/verify.ts --network base-sepolia",
     "verify:base": "hardhat run scripts/verify.ts --network base",
     "flatten": "hardhat flatten",
