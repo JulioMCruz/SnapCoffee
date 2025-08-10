@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Home, Trophy, Camera, User } from "lucide-react";
+import { Home, Search, Camera, User } from "lucide-react";
 import UserProfileSimple from "@/components/UserProfileSimple";
 
 interface MobileLayoutProps {
@@ -54,16 +54,16 @@ export default function MobileLayout({ children }: MobileLayoutProps) {
               <span className="mt-1">Home</span>
             </NavLink>
 
-            <NavLink to="/leaderboard" aria-label="Leaderboard"
+            <NavLink to="/discover" aria-label="Discover Creators"
               className={({ isActive }) => `flex flex-col items-center text-xs ${isActive ? "text-primary" : "text-muted-foreground"}`}>
-              <Trophy className={`h-6 w-6 ${isActive("/leaderboard") ? "text-primary" : "text-primary"}`} />
-              <span className="mt-1">Top</span>
+              <Search className={`h-6 w-6 ${isActive("/discover") ? "text-primary" : "text-primary"}`} />
+              <span className="mt-1">Discover</span>
             </NavLink>
 
             <button
               aria-label="Snap"
               onClick={() => navigate("/snap")}
-              className="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground rounded-full h-14 w-14 shadow-lg ring-4 ring-primary/20 active:scale-95 transition-transform">
+              className="absolute -top-16 right-4 bg-primary text-primary-foreground rounded-full h-14 w-14 shadow-lg ring-4 ring-primary/20 active:scale-95 transition-transform">
               <div className="relative flex items-center justify-center h-full w-full">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-primary/40 opacity-75 animate-[ping_1.5s_ease-out_infinite]"></span>
                 <Camera className="relative h-7 w-7" />
