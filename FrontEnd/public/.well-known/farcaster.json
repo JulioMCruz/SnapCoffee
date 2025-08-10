@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjIxMDY3MSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDFCMTQ4OTFmNEU2QkQ4NTY1NmZiN0YyN0M0MGZkMWQ2NmRkNzZkMkIifQ",
-    "payload": "eyJkb21haW4iOiJjb2RhbGFicy5uZ3Jvay5pbyJ9",
-    "signature": "H1grIlz09NXlczLQg03+w9HmQp73uAX75oHIT3foY/wGLklk1Jn6xGg3QlvxjzJyejmhTHmjTB7U9e7DIyH7LRw="
+    "header": "eyJmaWQiOjIxMDY3MSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDAxMUM1RjM3N2M2OTY4ZjhDOGNGODZmY0Y3OEYxMUFhOTgyMmJFOEYifQ",
+    "payload": "eyJkb21haW4iOiJzbmFwY29mZmVlLnh5eiJ9",
+    "signature": "MHgyYzIyMDRmZWEyNWVlZGZiYTFkMWM4YzAwZWQ3ODc2ODViMzVmMTZiZGY0MDYxZDE5MDA3YjY0NjYwYzNhYTI5MGM5OWI1OTI1YThhM2FiYWI0OWQ3ODNkNmEyNzZiY2YwZTAyMDA4YjhjNGI5ZGIxODYzZjM5ZmIyNDhmYzk5MjFj"
   },
   "frame": {
     "name": "Snap Coffee",
