@@ -11,6 +11,29 @@
 
 ---
 
+## 📱 **Live Farcaster Mini App**
+
+**🚀 Try it now:** [**Snap Coffee on Farcaster →**](https://farcaster.xyz/miniapps/hzGBxlnujJm4/snap-coffee)
+
+<div align="center">
+
+| **App Landing Page** | **Base App Search** |
+|:-------------------:|:-------------------:|
+| ![App Landing](./Assets/app-landing.jpeg) | ![Base App Search](./Assets/base-app-search.jpeg) |
+| *Main interface with coffee feed and snap functionality* | *Featured in Base Mini Apps directory* |
+
+</div>
+
+### 🎯 **What You Can Do:**
+- **📸 Snap Coffee Photos** - Take photos at local coffee shops and earn $BEAN rewards
+- **🪙 Earn Digital Rewards** - Get 3 $BEAN tokens for every verified coffee visit
+- **🎫 Collect NFT Coupons** - Receive redeemable NFT coupons after 10 coffee visits
+- **💰 Tip Coffee Creators** - Support coffee influencers with seamless USDC tips via fiat-to-crypto
+- **🌍 Discover Local Coffee** - Explore coffee culture in your city through social feed
+- **⚡ Experience Base Network** - Lightning-fast transactions with minimal fees
+
+---
+
 ## 🏆 CDP Challenge Tracks
 
 Snap Coffee participates in **4 Coinbase Developer Platform challenge tracks**, showcasing the complete CDP ecosystem integration:
@@ -755,8 +778,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links & Resources
 
+- **🚀 Live App**: [Snap Coffee on Farcaster](https://farcaster.xyz/miniapps/hzGBxlnujJm4/snap-coffee)
 - **🌐 Website**: [snapcoffee.xyz](https://snapcoffee.xyz) *(coming soon)*
-- **📱 App**: [Download from App Store](https://apps.apple.com/app/snap-coffee) *(coming soon)*  
+- **📱 App Store**: [Download from App Store](https://apps.apple.com/app/snap-coffee) *(coming soon)*  
 - **🐦 Twitter**: [@SnapCoffeeBase](https://twitter.com/SnapCoffeeBase)
 - **💬 Discord**: [Join Community](https://discord.gg/snapcoffee)
 - **📧 Contact**: hello@snapcoffee.xyz
