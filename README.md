@@ -354,20 +354,24 @@ By fixing the **loyalty gap** and creating a shareable, gamified coffee culture,
 LoyaltyToken.sol      // ERC20 $BEAN rewards system
 RewardsController.sol // Coffee verification & reward distribution
 CouponNFT.sol         // ERC721 redeemable coffee coupons  
-SnapRegistry.sol      // Event logging and verification
+SnapRegistry.sol      // Event logging, analytics & anti-fraud
 ```
 
-#### Deployed Contracts (Base Sepolia Testnet)
+#### 📜 **Deployed Smart Contracts (Base Sepolia Testnet)**
 
 | Contract | Address | BaseScan Explorer | Status |
 |----------|---------|-------------------|--------|
-| **$BEAN Token** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View Contract →](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752#code) | ✅ Verified |
-| **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View Contract →](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834#code) | ✅ Verified |
-| **🎫 CouponNFT** | `0xD887274dF28Ac21efafFeB8bc421B5305884fCAa` | [View Contract →](https://sepolia.basescan.org/address/0xD887274dF28Ac21efafFeB8bc421B5305884fCAa#code) | ✅ Verified |
+| **🪙 LoyaltyToken ($BEAN)** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [🔍 View Contract →](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752#code) | ✅ **Verified** |
+| **🎯 RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [🔍 View Contract →](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834#code) | ✅ **Verified** |
+| **🎫 CouponNFT** | `0xD887274dF28Ac21efafFeB8bc421B5305884fCAa` | [🔍 View Contract →](https://sepolia.basescan.org/address/0xD887274dF28Ac21efafFeB8bc421B5305884fCAa#code) | ✅ **Verified** |
+| **📊 SnapRegistry** | `0x384EB8166edf41e5a4cf2134fFf873459BD78EfC` | [🔍 View Contract →](https://sepolia.basescan.org/address/0x384EB8166edf41e5a4cf2134fFf873459BD78EfC#code) | ✅ **Verified** |
+
+> **🔗 All Contracts Verified**: Complete source code available on BaseScan with full transparency
 
 **Key Features:**
 - 🪙 **$BEAN Token**: ERC20 rewards with 3 BEAN per verified coffee
 - 🎫 **CouponNFT**: ERC721 redeemable coffee coupons after 10 visits (10M max supply)
+- 📊 **SnapRegistry**: Event logging, user analytics, venue insights, and anti-fraud protection
 - 🛡️ **Anti-fraud**: Daily limits (10 coffees/user), 30min cooldowns per location
 - 👥 **Merchant System**: Registration and analytics for coffee shops
 - 🔍 **Full Transparency**: Complete source code verified on BaseScan
