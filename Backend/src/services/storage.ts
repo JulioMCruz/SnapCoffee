@@ -1,22 +1,33 @@
 import { createHash } from 'crypto';
 import { config } from '@/config';
 import sharp from 'sharp';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: config.FIREBASE_API_KEY,
+  authDomain: config.FIREBASE_AUTH_DOMAIN,
+  projectId: config.FIREBASE_PROJECT_ID,
+  storageBucket: config.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: config.FIREBASE_MESSAGING_SENDER_ID,
+  appId: config.FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 export class StorageService {
   
   /**
-   * Upload image to storage (S3 or local filesystem)
+   * Upload image to Firebase Storage
    */
   async uploadImage(imageBuffer: Buffer, filePath: string): Promise<string> {
     try {
       // Optimize image before upload
       const optimizedBuffer = await this.optimizeImage(imageBuffer);
       
-      if (config.AWS_S3_BUCKET && config.AWS_ACCESS_KEY_ID) {
-        return await this.uploadToS3(optimizedBuffer, filePath);
-      } else {
-        return await this.uploadToLocal(optimizedBuffer, filePath);
-      }
+      return await this.uploadToFirebase(optimizedBuffer, filePath);
     } catch (error) {
       console.error('Image upload error:', error);
       throw new Error('Failed to upload image');
@@ -24,38 +35,27 @@ export class StorageService {
   }
   
   /**
-   * Upload to AWS S3
+   * Upload to Firebase Storage
    */
-  private async uploadToS3(imageBuffer: Buffer, filePath: string): Promise<string> {
+  private async uploadToFirebase(imageBuffer: Buffer, filePath: string): Promise<string> {
     try {
-      // TODO: Implement AWS S3 upload using AWS SDK
-      // For now, simulate S3 upload
-      const fileName = filePath.split('/').pop();
-      const s3Url = `https://${config.AWS_S3_BUCKET}.s3.${config.AWS_REGION}.amazonaws.com/${filePath}`;
+      const storageRef = ref(storage, filePath);
+      const metadata = {
+        contentType: 'image/jpeg',
+        customMetadata: {
+          uploadedAt: new Date().toISOString(),
+          source: 'snap-coffee-app',
+        }
+      };
       
-      console.log('Simulating S3 upload:', s3Url);
+      const uploadResult = await uploadBytes(storageRef, imageBuffer, metadata);
+      const downloadURL = await getDownloadURL(uploadResult.ref);
       
-      // In production, this would be:
-      // const s3 = new AWS.S3({
-      //   accessKeyId: config.AWS_ACCESS_KEY_ID,
-      //   secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
-      //   region: config.AWS_REGION,
-      // });
-      // 
-      // const uploadResult = await s3.upload({
-      //   Bucket: config.AWS_S3_BUCKET,
-      //   Key: filePath,
-      //   Body: imageBuffer,
-      //   ContentType: 'image/jpeg',
-      //   ACL: 'public-read',
-      // }).promise();
-      // 
-      // return uploadResult.Location;
-      
-      return s3Url;
+      console.log('Firebase upload successful:', downloadURL);
+      return downloadURL;
     } catch (error) {
-      console.error('S3 upload error:', error);
-      throw new Error('S3 upload failed');
+      console.error('Firebase upload error:', error);
+      throw new Error('Firebase upload failed');
     }
   }
   

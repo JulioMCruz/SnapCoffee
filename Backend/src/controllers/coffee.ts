@@ -3,17 +3,31 @@ import { ApiResponse, CoffeeSnap, CoffeeSnapValidation } from '@/types';
 import { config } from '@/config';
 import { ImageValidationService } from '@/services/image-validation';
 import { StorageService } from '@/services/storage';
+import { FarcasterService } from '@/services/farcaster';
+import { CoffeeShopService } from '@/services/coffee-shop';
 
 export class CoffeeController {
   private imageValidationService = new ImageValidationService();
   private storageService = new StorageService();
+  private farcasterService = new FarcasterService();
+  private coffeeShopService = new CoffeeShopService();
   
   /**
    * Validate and process a coffee snap with file upload
    */
   async validateSnap(req: Request, res: Response) {
     try {
-      const { userId, fid, location, description } = req.body;
+      const { 
+        userId, 
+        fid, 
+        coffeeType, 
+        coffeeName, 
+        venueName, 
+        city, 
+        state, 
+        rating,
+        description 
+      } = req.body;
       const imageFile = req.file;
       
       if (!imageFile) {
@@ -25,11 +39,11 @@ export class CoffeeController {
         return res.status(400).json(response);
       }
       
-      if (!userId || !fid || !location) {
+      if (!userId || !fid || !coffeeType || !coffeeName || !venueName || !city || !state) {
         const response: ApiResponse = {
           success: false,
           error: 'Validation Error',
-          message: 'Missing required fields: userId, fid, location',
+          message: 'Missing required fields: userId, fid, coffeeType, coffeeName, venueName, city, state',
         };
         return res.status(400).json(response);
       }
@@ -50,10 +64,18 @@ export class CoffeeController {
         return res.status(400).json(response);
       }
       
-      // Upload image to storage
+      // Upload image to Firebase Storage
       const imageUrl = await this.storageService.uploadImage(
         imageFile.buffer,
         `snaps/${userId}/${Date.now()}.jpg`
+      );
+      
+      // Get or create coffee shop with CDP wallet
+      const coffeeShop = await this.coffeeShopService.getOrCreateShop(
+        venueName,
+        `${city}, ${state}`, // Basic address format
+        city,
+        state
       );
       
       // Create coffee snap record
@@ -63,14 +85,68 @@ export class CoffeeController {
         fid: parseInt(fid),
         imageUrl,
         imageHash: await this.storageService.generateImageHash(imageFile.buffer),
-        location: JSON.parse(location),
-        description,
+        location: {
+          venueId: coffeeShop.id,
+          venueName: coffeeShop.name,
+          city: coffeeShop.city,
+          state: coffeeShop.state,
+        },
+        description: `${coffeeType} - ${coffeeName}${description ? ` | ${description}` : ''}`,
         timestamp: new Date(),
         validated: true,
         rewardAmount: config.REWARDS.COFFEE_SNAP_AMOUNT,
       };
       
-      // TODO: Save to database
+      // Create Farcaster post
+      let farcasterCast = null;
+      try {
+        const postText = this.farcasterService.generateCoffeePostText(
+          coffeeName,
+          venueName,
+          city,
+          state,
+          description
+        );
+        
+        const castResponse = await this.farcasterService.createCast({
+          text: postText,
+          imageUrl: imageUrl,
+          channel: 'coffee', // Post to coffee channel
+        });
+        
+        if (castResponse.success && castResponse.cast) {
+          farcasterCast = castResponse.cast;
+          console.log('Farcaster cast created:', farcasterCast.hash);
+          
+          // Wait for cast verification
+          setTimeout(async () => {
+            const verification = await this.farcasterService.waitForCastVerification(
+              farcasterCast!.hash,
+              3, // Max 3 retries
+              3000 // 3 second delay
+            );
+            
+            if (verification.verified) {
+              console.log('Farcaster cast verified, processing rewards...');
+              // TODO: Trigger reward distribution to user
+              // TODO: Update coffee shop metadata
+              await this.coffeeShopService.updateShopMetadata(
+                coffeeShop.id,
+                1,
+                config.REWARDS.COFFEE_SNAP_AMOUNT,
+                userId
+              );
+            } else {
+              console.log('Farcaster cast not verified, no additional rewards');
+            }
+          }, 5000); // Wait 5 seconds before starting verification
+        }
+      } catch (castError) {
+        console.error('Farcaster cast creation failed:', castError);
+        // Continue without Farcaster post - still give base reward
+      }
+      
+      // TODO: Save snap to database
       console.log('Coffee snap validated:', coffeeSnap.id);
       
       const response: ApiResponse = {
@@ -78,9 +154,11 @@ export class CoffeeController {
         data: {
           snap: coffeeSnap,
           validation,
+          coffeeShop,
+          farcasterCast,
           rewardEligible: true,
         },
-        message: 'Coffee snap validated successfully',
+        message: 'Coffee snap validated and posted successfully!',
       };
       
       res.json(response);
