@@ -4,18 +4,22 @@ import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { base, baseSepolia } from 'viem/chains';
 import { http } from 'viem';
-import { injected } from 'wagmi/connectors';
+import { farcasterMiniAppConnector } from '@farcaster/miniapp-wagmi-connector';
+import { baseAccount } from 'wagmi/connectors';
 
 const queryClient = new QueryClient();
 
 // Use Base testnet for development, mainnet for production
 const chain = import.meta.env.MODE === 'development' ? baseSepolia : base;
 
-// Create Wagmi config with Base network support
+// Create Wagmi config with Farcaster Mini App and Base Account connectors
 const config = createConfig({
   chains: [base, baseSepolia],
   connectors: [
-    injected(), // Works with Farcaster's embedded wallet
+    farcasterMiniAppConnector(), // Farcaster Mini App connector for embedded wallet
+    baseAccount({
+      appName: 'Snap Coffee',
+    }), // Base Account connector for native Base integration
   ],
   transports: {
     [base.id]: http(import.meta.env.VITE_BASE_RPC_URL || 'https://mainnet.base.org'),
