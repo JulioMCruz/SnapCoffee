@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:ngrok": "VITE_HMR_HOST=codalabs.ngrok.io VITE_HMR_PORT=443 VITE_HMR_PROTOCOL=wss vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

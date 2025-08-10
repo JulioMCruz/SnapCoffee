@@ -56,18 +56,22 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
         throw new Error('No user context available from SDK');
       }
 
-      // Create user from available context
+      // Extract real user data from context
+      const contextUser = context.user;
       const farcasterUser: FarcasterUser = {
-        fid: context.user?.fid || context.client?.clientFid || 123456,
-        username: context.user?.username || 'coffeeluver',
-        displayName: context.user?.displayName || context.user?.username || 'Coffee Lover',
-        pfpUrl: context.user?.pfpUrl || '/placeholder.svg',
-        custodyAddress: context.user?.custodyAddress || '0x1234567890abcdef1234567890abcdef12345678',
-        connectedAddress: context.user?.verifications?.[0] || context.user?.custodyAddress || '0x1234567890abcdef1234567890abcdef12345678',
-        bio: context.user?.bio,
-        followerCount: context.user?.followerCount,
-        followingCount: context.user?.followingCount,
+        fid: contextUser?.fid || context.client?.clientFid || 123456,
+        username: contextUser?.username || 'coffeeluver',
+        displayName: contextUser?.displayName || contextUser?.username || 'Coffee Lover',
+        pfpUrl: contextUser?.pfpUrl || '/placeholder.svg',
+        custodyAddress: contextUser?.custodyAddress || '0x1234567890abcdef1234567890abcdef12345678',
+        connectedAddress: contextUser?.verifications?.[0] || contextUser?.custodyAddress || '0x1234567890abcdef1234567890abcdef12345678',
+        bio: contextUser?.bio,
+        followerCount: contextUser?.followerCount,
+        followingCount: contextUser?.followingCount,
       };
+
+      console.log('🔍 Context user data:', contextUser);
+      console.log('🔍 Processed farcaster user:', farcasterUser);
 
       console.log('✅ Farcaster user created:', farcasterUser);
       setUser(farcasterUser);

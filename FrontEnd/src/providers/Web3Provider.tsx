@@ -4,18 +4,22 @@ import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { base, baseSepolia } from 'viem/chains';
 import { http } from 'viem';
+import { injected } from 'wagmi/connectors';
 
 const queryClient = new QueryClient();
 
 // Use Base testnet for development, mainnet for production
-const chain = process.env.NODE_ENV === 'development' ? baseSepolia : base;
+const chain = import.meta.env.MODE === 'development' ? baseSepolia : base;
 
-// Create Wagmi config for OnchainKit
+// Create Wagmi config with Base network support
 const config = createConfig({
   chains: [base, baseSepolia],
+  connectors: [
+    injected(), // Works with Farcaster's embedded wallet
+  ],
   transports: {
-    [base.id]: http(),
-    [baseSepolia.id]: http(),
+    [base.id]: http(import.meta.env.VITE_BASE_RPC_URL || 'https://mainnet.base.org'),
+    [baseSepolia.id]: http(import.meta.env.VITE_BASE_SEPOLIA_RPC_URL || 'https://sepolia.base.org'),
   },
 });
 
@@ -30,7 +34,7 @@ export function Web3Provider({ children }: Web3ProviderProps) {
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
           chain={chain}
-          apiKey={process.env.VITE_CDP_API_KEY}
+          apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY}
         >
           {children}
         </OnchainKitProvider>
