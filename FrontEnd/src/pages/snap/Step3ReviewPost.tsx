@@ -2,7 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import MobileLayout from "@/layouts/MobileLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Star, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 const types = ["Espresso", "Latte", "Cold Brew", "Cappuccino", "Mocha"];
@@ -17,7 +18,76 @@ export default function Step3ReviewPost() {
   const [selected, setSelected] = useState<string | null>(null);
   const [rating, setRating] = useState<number>(4);
   const [pair, setPair] = useState<string>("");
+  const [coffeeName, setCoffeeName] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  const handleSubmit = async () => {
+    if (!img || !selected || !coffeeName.trim() || !city.trim() || !state.trim()) {
+      toast({ 
+        title: "Missing Information", 
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Convert blob URL to File for upload
+      const response = await fetch(img);
+      const blob = await response.blob();
+      const file = new File([blob], 'coffee-snap.jpg', { type: 'image/jpeg' });
+
+      // Create form data
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('userId', 'user_123'); // TODO: Get from auth context
+      formData.append('fid', '123456'); // TODO: Get from Farcaster auth
+      formData.append('coffeeType', selected);
+      formData.append('coffeeName', coffeeName);
+      formData.append('venueName', cafe);
+      formData.append('city', city);
+      formData.append('state', state);
+      formData.append('rating', rating.toString());
+      if (pair.trim()) {
+        formData.append('description', `Paired with: ${pair}`);
+      }
+
+      // Submit to backend
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+      const uploadResponse = await fetch(`${apiUrl}/coffee/validate-snap`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await uploadResponse.json();
+      
+      if (result.success) {
+        toast({ 
+          title: "Success! 🎉", 
+          description: `You earned ${result.data?.snap?.rewardAmount || '10'} $BEAN tokens!` 
+        });
+        navigate("/", { state: { posted: true, snap: result.data?.snap } });
+      } else {
+        toast({ 
+          title: "Upload Failed", 
+          description: result.message || "Please try again",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast({ 
+        title: "Network Error", 
+        description: "Please check your connection and try again",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <MobileLayout title="Review & Post">
@@ -56,6 +126,37 @@ export default function Step3ReviewPost() {
           </div>
         </div>
 
+        <div className="mb-3">
+          <p className="text-sm mb-1">Coffee name <span className="text-red-500">*</span></p>
+          <Input
+            value={coffeeName}
+            onChange={(e) => setCoffeeName(e.target.value)}
+            placeholder="e.g., House Blend"
+            className="rounded-2xl"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <p className="text-sm mb-1">City <span className="text-red-500">*</span></p>
+            <Input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="e.g., San Francisco"
+              className="rounded-2xl"
+            />
+          </div>
+          <div>
+            <p className="text-sm mb-1">State <span className="text-red-500">*</span></p>
+            <Input
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              placeholder="e.g., CA"
+              className="rounded-2xl"
+            />
+          </div>
+        </div>
+
         <div className="mb-6">
           <p className="text-sm mb-1">What would you pair this with?</p>
           <textarea
@@ -69,12 +170,17 @@ export default function Step3ReviewPost() {
         <div className="fixed bottom-24 left-0 right-0 max-w-md mx-auto px-4">
           <Button
             className="w-full rounded-full h-12 text-base"
-            onClick={() => {
-              toast({ title: "You earned 10 $BEAN tokens!" });
-              navigate("/", { state: { posted: true } });
-            }}
+            onClick={handleSubmit}
+            disabled={isSubmitting || !selected || !coffeeName.trim() || !city.trim() || !state.trim()}
           >
-            Post & Earn
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Posting...
+              </>
+            ) : (
+              'Post & Earn'
+            )}
           </Button>
         </div>
       </section>
