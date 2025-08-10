@@ -11,8 +11,10 @@
     "homeUrl": "https://snapcoffee.xyz/",
     "imageUrl": "https://snapcoffee.xyz/placeholder.svg",
     "buttonTitle": "Open Snap Coffee",
-    "splashImageUrl": "https://snapcoffee.xyz/placeholder.svg",
+    "webhookUrl": "https://snapcoffee.xyz/api/webhook",
+    "heroImageUrl": "https://snapcoffee.xyz/hero.png",
+    "splashImageUrl": "https://snapcoffee.xyz/splash.png",
     "splashBackgroundColor": "#0052FF",
-    "webhookUrl": "https://snapcoffee.xyz/api/webhook"
+    "splashTextColor": "#FFFFFF"
   }
 }
