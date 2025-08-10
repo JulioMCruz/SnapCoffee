@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { OnrampController } from '@/controllers/onramp';
+import { authenticateApiKey, optionalAuth } from '@/middleware/auth';
 
 const router = Router();
 const onrampController = new OnrampController();
@@ -9,7 +10,7 @@ const onrampController = new OnrampController();
  * Create CDP Onramp session for fiat-to-crypto conversion
  * Body: { userId, amount, currency, destinationWallet }
  */
-router.post('/create-session', onrampController.createSession);
+router.post('/create-session', authenticateApiKey, onrampController.createSession);
 
 /**
  * GET /api/onramp/session/:sessionId
@@ -35,6 +36,6 @@ router.get('/user/:userId/sessions', onrampController.getUserSessions);
  * Process tip transaction via onramp
  * Body: { fromUserId, toUserId, amount, currency }
  */
-router.post('/tip', onrampController.processTip);
+router.post('/tip', authenticateApiKey, onrampController.processTip);
 
 export default router;

@@ -76,8 +76,8 @@ export const config = {
     MAX_REQUESTS: 100, // requests per window
   },
   
-  // JWT Configuration (for future auth)
-  JWT_SECRET: process.env.JWT_SECRET || 'snap-coffee-dev-secret',
+  // API Authentication
+  JWT_SECRET: process.env.API_SECRET || process.env.JWT_SECRET || 'snap-coffee-dev-secret',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
   
   // Webhook Configuration
