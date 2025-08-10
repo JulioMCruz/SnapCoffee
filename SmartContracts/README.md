@@ -21,10 +21,10 @@ This repository contains the smart contracts that power Snap Coffee, a Web3 soci
 
 | Contract | Address | Explorer Link | Status |
 |----------|---------|---------------|--------|
-| **LoyaltyToken ($BEAN)** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View on BaseScan](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752) | ✅ Deployed |
-| **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View on BaseScan](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834) | ✅ Deployed |
+| **LoyaltyToken ($BEAN)** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View on BaseScan](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752#code) | ✅ Verified |
+| **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View on BaseScan](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834#code) | ✅ Verified |
 
-> **Note**: Contracts need to be verified on BaseScan. Add your `BASESCAN_API_KEY` to `.env` and run `npm run verify:base-sepolia`
+> **Success**: Both contracts are now verified on BaseScan with full source code visibility!
 
 ### Contract Interactions
 
