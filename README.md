@@ -78,9 +78,23 @@ By fixing the **loyalty gap** and creating a shareable, gamified coffee culture,
 ### Smart Contracts (Base Network)
 ```solidity
 LoyaltyToken.sol      // ERC20 $BEAN rewards system
+RewardsController.sol // Coffee verification & reward distribution
 CouponNFT.sol         // ERC721 redeemable coffee coupons  
 SnapRegistry.sol      // Event logging and verification
 ```
+
+#### Deployed Contracts (Base Sepolia Testnet)
+
+| Contract | Address | BaseScan Explorer | Status |
+|----------|---------|-------------------|--------|
+| **$BEAN Token** | `0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752` | [View Contract →](https://sepolia.basescan.org/address/0xC74C0f76acA119B8e68F7A4f7580E80f0BE42752#code) | ✅ Verified |
+| **RewardsController** | `0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834` | [View Contract →](https://sepolia.basescan.org/address/0xE3b30Cc77dfbEBC69C3c1e40703C792A934dE834#code) | ✅ Verified |
+
+**Key Features:**
+- 🪙 **$BEAN Token**: ERC20 rewards with 3 BEAN per verified coffee
+- 🛡️ **Anti-fraud**: Daily limits (10 coffees/user), 30min cooldowns per location
+- 👥 **Merchant System**: Registration and analytics for coffee shops
+- 🔍 **Full Transparency**: Complete source code verified on BaseScan
 
 ### Backend Services (Planned)
 - **Runtime**: Node.js + TypeScript
@@ -166,14 +180,15 @@ npm run lint         # Run ESLint
 - [x] Camera integration and photo workflow
 - [x] Progress tracking and localStorage persistence  
 - [x] Instagram-style feed with coffee cards
-- [ ] Base network smart contracts
+- [x] Base network smart contracts (BEAN Token + RewardsController)
 - [ ] OnchainKit wallet integration
 
 ### Phase 2: Web3 Integration 🔄
-- [ ] ERC20 $BEAN token implementation
+- [x] ERC20 $BEAN token implementation (3 BEAN per coffee reward)
+- [x] Smart contract rewards controller with anti-fraud protection
 - [ ] ERC721 NFT coupon system
 - [ ] CDP Server Wallet automation
-- [ ] On-chain event logging
+- [ ] On-chain event logging integration
 - [ ] Real-time feed from blockchain data
 
 ### Phase 3: Monetization & Scale 📈
