@@ -4,7 +4,7 @@ import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { base, baseSepolia } from 'viem/chains';
 import { http } from 'viem';
-import { farcasterMiniAppConnector } from '@farcaster/miniapp-wagmi-connector';
+import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import { baseAccount } from 'wagmi/connectors';
 
 const queryClient = new QueryClient();
@@ -16,7 +16,7 @@ const chain = import.meta.env.MODE === 'development' ? baseSepolia : base;
 const config = createConfig({
   chains: [base, baseSepolia],
   connectors: [
-    farcasterMiniAppConnector(), // Farcaster Mini App connector for embedded wallet
+    farcasterMiniApp(), // Farcaster Mini App connector for embedded wallet
     baseAccount({
       appName: 'Snap Coffee',
     }), // Base Account connector for native Base integration
