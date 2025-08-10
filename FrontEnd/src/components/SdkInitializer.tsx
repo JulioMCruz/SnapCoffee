@@ -145,7 +145,7 @@ export function SdkInitializer() {
   }, [])
 
   // Show initialization status in development mode for debugging
-  if (process.env.NODE_ENV === 'development' && !initialized) {
+  if (import.meta.env.MODE === 'development' && !initialized) {
     return (
       <div style={{ 
         position: 'fixed', 

@@ -21,7 +21,7 @@ export default function UserProfile() {
     );
   }
 
-  if (error && process.env.NODE_ENV !== 'development') {
+  if (error && import.meta.env.MODE !== 'development') {
     return (
       <div className="flex items-center gap-2 text-red-500">
         <div className="h-8 w-8 bg-red-50 rounded-full flex items-center justify-center">

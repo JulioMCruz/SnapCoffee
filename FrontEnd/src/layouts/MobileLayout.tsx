@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Home, Trophy, Camera, User } from "lucide-react";
-import UserProfile from "@/components/UserProfile";
+import UserProfileSimple from "@/components/UserProfileSimple";
 
 interface MobileLayoutProps {
   title?: string;
   children: ReactNode;
 }
 
-export default function MobileLayout({ title = "Snap Coffee", children }: MobileLayoutProps) {
+export default function MobileLayout({ children }: MobileLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const isActive = (path: string) => location.pathname === path;
@@ -16,12 +16,12 @@ export default function MobileLayout({ title = "Snap Coffee", children }: Mobile
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-        <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             <img 
-              src="/logo.png" 
+              src="/splash.png" 
               alt="Snap Coffee" 
-              className="h-7 w-7 rounded-lg object-contain"
+              className="h-10 w-10 rounded-lg object-contain flex-shrink-0"
               onError={(e) => {
                 // Fallback if logo.png fails to load
                 const target = e.target as HTMLImageElement;
@@ -29,12 +29,17 @@ export default function MobileLayout({ title = "Snap Coffee", children }: Mobile
                 target.nextElementSibling?.classList.remove('hidden');
               }}
             />
-            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center hidden">
+            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center hidden flex-shrink-0">
               <span className="text-primary text-sm font-bold">SC</span>
             </div>
-            <span className="font-semibold">{title}</span>
+            <div className="flex flex-col leading-tight">
+              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">Snap</span>
+              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">Coffee</span>
+            </div>
           </div>
-          <UserProfile />
+          <div className="flex-shrink-0 ml-4">
+            <UserProfileSimple />
+          </div>
         </div>
       </header>
 
