@@ -4,28 +4,37 @@
     "payload": "eyJkb21haW4iOiJzbmFwY29mZmVlLnh5eiJ9",
     "signature": "MHgyYzIyMDRmZWEyNWVlZGZiYTFkMWM4YzAwZWQ3ODc2ODViMzVmMTZiZGY0MDYxZDE5MDA3YjY0NjYwYzNhYTI5MGM5OWI1OTI1YThhM2FiYWI0OWQ3ODNkNmEyNzZiY2YwZTAyMDA4YjhjNGI5ZGIxODYzZjM5ZmIyNDhmYzk5MjFj"
   },
-  "version": "1",
-  "name": "Snap Coffee",
-  "homeUrl": "https://snapcoffee.xyz/",
-  "iconUrl": "https://snapcoffee.xyz/icon-1024.png",
-  "splashImageUrl": "https://snapcoffee.xyz/splash-200.png",
-  "splashBackgroundColor": "#0052FF",
-  "heroImageUrl": "https://snapcoffee.xyz/hero-1200x630.png",
-  "subtitle": "Social Coffee Rewards on Base",
-  "description": "Snap photos of your coffee, earn $BEAN tokens, and redeem NFT coupons. Connect with coffee lovers and discover local cafes on Base network.",
-  "tagline": "Coffee + Crypto + Community",
-  "primaryCategory": "social",
-  "tags": ["coffee", "social", "crypto", "rewards", "base"],
-  "canonicalDomain": "snapcoffee.xyz",
-  "requiredChains": ["base"],
-  "requiredCapabilities": ["wallet"],
-  "ogTitle": "Snap Coffee - Social Coffee Rewards",
-  "ogDescription": "Snap photos, earn tokens, redeem NFT coupons. The Web3 coffee social network on Base.",
-  "ogImageUrl": "https://snapcoffee.xyz/og-image.png",
-  "screenshotUrls": [
-    "https://snapcoffee.xyz/screenshot-1.png",
-    "https://snapcoffee.xyz/screenshot-2.png",
-    "https://snapcoffee.xyz/screenshot-3.png"
-  ],
-  "webhookUrl": "https://snapcoffee.xyz/api/webhook"
+  "frame": {
+    "name": "Snap Coffee",
+    "version": "1",
+    "iconUrl": "https://snapcoffee.xyz/icon-1024.png",
+    "homeUrl": "https://snapcoffee.xyz",
+    "tags": [
+      "coffee",
+      "social", 
+      "crypto",
+      "rewards",
+      "base"
+    ],
+    "tagline": "Coffee + Crypto + Community",
+    "buttonTitle": "☕ Snap Coffee",
+    "ogTitle": "Snap Coffee - Social Coffee Rewards",
+    "webhookUrl": "https://snapcoffee.xyz/api/webhook",
+    "splashBackgroundColor": "#0052FF",
+    "splashImageUrl": "https://snapcoffee.xyz/splash-200.png",
+    "primaryCategory": "social",
+    "description": "Snap photos of your coffee, earn $BEAN tokens, and redeem NFT coupons. Connect with coffee lovers and discover local cafes on Base network.",
+    "subtitle": "Social Coffee Rewards on Base",
+    "heroImageUrl": "https://snapcoffee.xyz/hero-1200x630.png",
+    "canonicalDomain": "snapcoffee.xyz",
+    "requiredChains": ["base"],
+    "requiredCapabilities": ["wallet"],
+    "ogDescription": "Snap photos, earn tokens, redeem NFT coupons. The Web3 coffee social network on Base.",
+    "ogImageUrl": "https://snapcoffee.xyz/og-image.png",
+    "screenshotUrls": [
+      "https://snapcoffee.xyz/screenshot-1.png",
+      "https://snapcoffee.xyz/screenshot-2.png",
+      "https://snapcoffee.xyz/screenshot-3.png"
+    ]
+  }
 }
